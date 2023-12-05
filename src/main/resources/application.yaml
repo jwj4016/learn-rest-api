@@ -1,0 +1,7 @@
+#json을 object로 : deserialization
+#object를 json으로 : serialization
+#deserialization할 때 모른는 properties가 있으면 실패.
+spring:
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
