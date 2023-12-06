@@ -2,6 +2,7 @@ package com.hj.learnrestapi.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hj.learnrestapi.common.TestDescription;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,9 +28,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //@WebMvcTest
 public class EventControllerTests {
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 //    @MockBean
 //    EventRepository eventRepository;
 
@@ -77,8 +78,8 @@ public class EventControllerTests {
         EventDto event = EventDto.builder()
                 .name("Spring")
                 .description("REST API Development with Spring")
-                .beginEnrollmentDateTime(LocalDateTime.of(2023, 12, 4, 12, 29))
-                .closeEnrollmentDateTime(LocalDateTime.of(2023, 12, 5, 12, 29))
+                .beginEnrollmentDateTime(LocalDateTime.of(2018, 10, 4, 12, 29))
+                .closeEnrollmentDateTime(LocalDateTime.of(2018, 10, 5, 12, 29))
                 .beginEventDateTime(LocalDateTime.of(2018, 11, 25, 14, 21))
                 .endEventDateTime(LocalDateTime.of(2018, 11, 26, 14, 21))
                 .basePrice(100)
@@ -94,6 +95,8 @@ public class EventControllerTests {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("free").value(false))
+                .andExpect(jsonPath("offline").value(true))
                 .andExpect(header().exists(HttpHeaders.LOCATION))
                 .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE));
     }
