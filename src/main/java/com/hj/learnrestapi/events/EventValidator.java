@@ -9,8 +9,9 @@ import java.time.LocalDateTime;
 public class EventValidator {
     public void validate(EventDto eventDto, Errors errors) {
         if (eventDto.getBasePrice() > eventDto.getMaxPrice() && eventDto.getMaxPrice() != 0) {
-            errors.rejectValue("basePrice", "wrongValue", "BasePrice is wrong.");
-            errors.rejectValue("maxPrice", "wrongValue", "maxPrice is wrong.");
+            errors.rejectValue("basePrice", "wrongValue", "BasePrice is wrong.");   //필드 에러
+            errors.rejectValue("maxPrice", "wrongValue", "maxPrice is wrong.");     //필드에러
+            errors.reject("wrongPrices", "Values of prices are wrong");                  //글로벌 에러
         }
 
         LocalDateTime endEventDateTime = eventDto.getEndEventDateTime();

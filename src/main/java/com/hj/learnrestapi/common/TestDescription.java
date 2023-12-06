@@ -1,4 +1,4 @@
-package com.hj.learnrestapi.events;
+package com.hj.learnrestapi.common;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
