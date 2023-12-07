@@ -4,7 +4,9 @@ import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -43,10 +45,17 @@ public class EventController {
         event.update();
         Event newEvent = eventRepository.save(event);
 
-        URI createdUri = linkTo(EventController.class)
-                .slash(newEvent.getId())
+        //링크 만들기
+        WebMvcLinkBuilder selfLinkBuilder = linkTo(EventController.class)
+                .slash(newEvent.getId());
+        URI createdUri = selfLinkBuilder
                 .toUri();
+        EventResource eventResource = new EventResource(event);
+        eventResource.add(linkTo(EventController.class).withRel("query-events"));
+        eventResource.add(selfLinkBuilder.withSelfRel());
+        eventResource.add(selfLinkBuilder.withRel("update-event")); //put 요청. 어떤 메소드를 사용해야하는지 설정할 수는 없음.
 
-        return ResponseEntity.created(createdUri).body(event);
+        return ResponseEntity.created(createdUri).body(eventResource);  //objectmapper가 컨버팅. bean serializer를 사용해서 변환.
     }
+
 }
