@@ -2,6 +2,58 @@
 #object를 json으로 : serialization
 #deserialization할 때 모른는 properties가 있으면 실패.
 spring:
+  profiles:
+    group:
+      "prod": "prod, common"
+      "test": "test, common"
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "common"
   jackson:
     deserialization:
       fail-on-unknown-properties: true
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      show_sql: true
+      format_sql: true
+      highlight_sql: true
+      #hibernate.jdbc.lob.non_contextual_creation: true
+      #use_sql_comments: true
+logging:
+  level:
+    org.springframework.web: debug
+    org.hibernate.SQL: debug
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+  datasource:
+    url: jdbc:mysql://localhost:3306/rest_api?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "test"
+  datasource:
+    url: jdbc:h2:mem:rest_api_test
+    username: sa
+    password:
+    hikari:
+      jdbc-url: jdbc:h2:mem:rest_api_test
+
+
+#logging.level.org.hibernate.SQL: DEBUG
+#logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE
