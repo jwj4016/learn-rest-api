@@ -1,6 +1,7 @@
 package com.hj.learnrestapi.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hj.learnrestapi.common.BaseControllerTest;
 import com.hj.learnrestapi.common.RestDocsConfiguration;
 import com.hj.learnrestapi.common.TestDescription;
 import org.junit.jupiter.api.BeforeAll;
@@ -40,26 +41,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
-@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
-@SpringBootTest
-@AutoConfigureMockMvc
-@AutoConfigureRestDocs
-@ActiveProfiles("test")
-//@Import(RestDocsConfiguration.class)
-//@WebMvcTest
-public class EventControllerTests {
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper objectMapper;
+public class EventControllerTests extends BaseControllerTest {
 //    @MockBean
     @Autowired
     EventRepository eventRepository;
-
-    @Autowired
-    ModelMapper modelMapper;
-
 
     @BeforeEach
     void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {

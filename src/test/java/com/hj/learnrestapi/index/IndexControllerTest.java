@@ -1,5 +1,6 @@
 package com.hj.learnrestapi.index;
 
+import com.hj.learnrestapi.common.BaseControllerTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
-@SpringBootTest
-@AutoConfigureMockMvc
-@AutoConfigureRestDocs
-@ActiveProfiles("test")
-public class IndexControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
+public class IndexControllerTest extends BaseControllerTest {
 
     @Test
     public void index() throws Exception {
