@@ -1,28 +1,17 @@
 package com.hj.learnrestapi.events;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hj.learnrestapi.common.BaseControllerTest;
-import com.hj.learnrestapi.common.RestDocsConfiguration;
 import com.hj.learnrestapi.common.TestDescription;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -37,6 +26,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -46,16 +37,10 @@ public class EventControllerTests extends BaseControllerTest {
     @Autowired
     EventRepository eventRepository;
 
-    @BeforeEach
-    void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-                .apply(documentationConfiguration(restDocumentation))
-                .build();
-    }
-
     @TestDescription("정상적으로 이벤트를 생성하는 테스트")
 //    @DisplayName("정상적으로 이벤트를 생성하는 테스트")
     @Test
+    @WithMockUser
     public void createEvent() throws Exception {
         EventDto event = EventDto.builder()
                 .name("Spring")
@@ -134,6 +119,7 @@ public class EventControllerTests extends BaseControllerTest {
                                 , fieldWithPath("free").description("it tells if this event is free or not")
                                 , fieldWithPath("offline").description("it tells if this event is offline event or not")
                                 , fieldWithPath("eventStatus").description("event status")
+                                , fieldWithPath("manager").description("event status")
 
                                 , fieldWithPath("_links.self.href").description("link to self")
                                 , fieldWithPath("_links.query-events.href").description("link to query event list")
@@ -283,6 +269,7 @@ public class EventControllerTests extends BaseControllerTest {
                                 , fieldWithPath("_embedded.eventResourceList[].offline").description("identifier of new event")
                                 , fieldWithPath("_embedded.eventResourceList[].free").description("identifier of new event")
                                 , fieldWithPath("_embedded.eventResourceList[].eventStatus").description("identifier of new event")
+                                , fieldWithPath("_embedded.eventResourceList[].manager").description("identifier of new event")
                                 , fieldWithPath("_embedded.eventResourceList[]._links.self.href").description("identifier of new event")
 
 

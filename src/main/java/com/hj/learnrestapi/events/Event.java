@@ -1,5 +1,6 @@
 package com.hj.learnrestapi.events;
 
+import com.hj.learnrestapi.accounts.Account;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.cglib.core.Local;
@@ -31,6 +32,8 @@ public class Event {
     private boolean free;
     @Enumerated(EnumType.STRING)
     private EventStatus eventStatus;
+    @ManyToOne
+    private Account manager;
 
     public void update() {
         //Update Free
